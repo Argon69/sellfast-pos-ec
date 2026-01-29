@@ -1,0 +1,42 @@
+# Dependencies
+/packages/
+/node_modules/
+
+# Visual Studio temporary files, build results, and caches
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Roslyn and analyzers
+.recommenders/
+*.ruleset
+
+# Local database files
+*.db
+*.db3
+*.sqbpro
+*.sqlite
+*.sqlite3
+
+# Other
+*.log
+*.log.*
+*.tlog
+*.DS_Store
+*.orig
