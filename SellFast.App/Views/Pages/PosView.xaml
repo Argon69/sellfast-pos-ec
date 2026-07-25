@@ -1,0 +1,200 @@
+<UserControl x:Class="SellFast.App.Views.Pages.PosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1100">
+
+    <Border Padding="24">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <!-- Products catalog area (65%) -->
+                <ColumnDefinition Width="*"/>
+                <!-- Shopping cart & checkout panel (35%) -->
+                <ColumnDefinition Width="380"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- LEFT: CATALOG & SEARCH AREA                            -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <Grid Grid.Column="0" Margin="0,0,16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Search & Filters Bar -->
+                    <RowDefinition Height="*"/>    <!-- Products Cards Grid -->
+                </Grid.RowDefinitions>
+
+                <!-- Search Bar -->
+                <Border Grid.Row="0" Margin="0,0,0,16">
+                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource ModernTextBox}" 
+                             Tag="Buscar producto por código o nombre...">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding EscanearCodigoCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </Border>
+
+                <!-- Product Cards Grid -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding ProductosFiltrados}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <!-- Product Card -->
+                                <Border Width="200" Height="210" Margin="0,0,14,14" 
+                                        Background="White" 
+                                        CornerRadius="20" Padding="16" 
+                                        BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/> <!-- Category Badge & Stock -->
+                                            <RowDefinition Height="*"/>    <!-- Product Info -->
+                                            <RowDefinition Height="Auto"/> <!-- Price & Add Button -->
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Header Badge -->
+                                        <Grid Grid.Row="0" Margin="0,0,0,8">
+                                            <Border CornerRadius="8" Background="{StaticResource BgPillBrush}" Padding="8,4" HorizontalAlignment="Left">
+                                                <TextBlock Text="{Binding Categoria}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding StockDisponible, StringFormat='{}Stock: {0}'}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <!-- Name & Code -->
+                                        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Codigo}" FontSize="11" Foreground="{StaticResource TextMutedBrush}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Nombre}" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                            <TextBlock Text="{Binding Descripcion}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,4,0,0"/>
+                                        </StackPanel>
+
+                                        <!-- Bottom: Price & Add Button -->
+                                        <Grid Grid.Row="2" Margin="0,8,0,0">
+                                            <TextBlock Text="{Binding Precio, Converter={StaticResource CurrencyFormatterConverter}}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+
+                                            <Button Content="+ Agregar" Style="{StaticResource PrimaryButton}" 
+                                                    Padding="12,6" FontSize="12" HorizontalAlignment="Right"
+                                                    Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- RIGHT: CART & CHECKOUT PANEL                           -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <Border Grid.Column="1" Background="White" CornerRadius="20" Padding="20" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Cart Title & Clear -->
+                        <RowDefinition Height="Auto"/> <!-- Client Selector -->
+                        <RowDefinition Height="*"/>    <!-- Cart Items Scroll -->
+                        <RowDefinition Height="Auto"/> <!-- Summary & Totals -->
+                        <RowDefinition Height="Auto"/> <!-- Pay Button -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="🛒  " FontSize="18"/>
+                            <TextBlock Text="Orden Actual" FontSize="17" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </StackPanel>
+
+                        <Button Content="Vaciar" Style="{StaticResource GhostButton}" HorizontalAlignment="Right" 
+                                Command="{Binding ClearCartCommand}" Padding="10,4" Foreground="{StaticResource ErrorRedBrush}"/>
+                    </Grid>
+
+                    <!-- Client Selector -->
+                    <Border Grid.Row="1" Background="{StaticResource BgElevatedBrush}" CornerRadius="14" Padding="12" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="CLIENTE SELECCIONADO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                            <ComboBox ItemsSource="{Binding ClientesDisponibles}" 
+                                      SelectedItem="{Binding SelectedCliente}"
+                                      DisplayMemberPath="NombreCompleto"
+                                      Background="White" Foreground="{StaticResource TextPrimaryBrush}"
+                                      Height="36" FontSize="13"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Cart Items Scroll -->
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,0,0,16">
+                        <ItemsControl ItemsSource="{Binding Cart}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource BgElevatedBrush}" CornerRadius="12" Padding="12" Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Item Info -->
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Producto.Nombre}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                <TextBlock Text="{Binding PrecioUnitario, Converter={StaticResource CurrencyFormatterConverter}}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+
+                                            <!-- Quantity Controls [-] N [+] -->
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                                                <Button Content="-" Style="{StaticResource GhostButton}" Width="28" Height="28" Padding="0"
+                                                        Command="{Binding DataContext.DecrementCartItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"/>
+
+                                                <TextBlock Text="{Binding Cantidad}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Width="24" TextAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <Button Content="+" Style="{StaticResource GhostButton}" Width="28" Height="28" Padding="0"
+                                                        Command="{Binding DataContext.IncrementCartItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"/>
+                                            </StackPanel>
+
+                                            <!-- Subtotal -->
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding Subtotal, Converter={StaticResource CurrencyFormatterConverter}}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Summary & Totals -->
+                    <Border Grid.Row="3" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,16">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,6">
+                                <TextBlock Text="Subtotal" Foreground="{StaticResource TextSecondaryBrush}" FontSize="13"/>
+                                <TextBlock Text="{Binding CartSubtotal, Converter={StaticResource CurrencyFormatterConverter}}" Foreground="{StaticResource TextPrimaryBrush}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,6">
+                                <TextBlock Text="Descuento (%)" Foreground="{StaticResource TextSecondaryBrush}" FontSize="13"/>
+                                <TextBlock Text="{Binding CartMontoDescuento, Converter={StaticResource CurrencyFormatterConverter}, StringFormat='-{0}'}" Foreground="{StaticResource WarningOrangeBrush}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                            </Grid>
+
+                            <Grid Margin="0,6,0,0">
+                                <TextBlock Text="TOTAL A PAGAR" Foreground="{StaticResource TextPrimaryBrush}" FontSize="15" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CartTotal, Converter={StaticResource CurrencyFormatterConverter}}" Foreground="{StaticResource SuccessGreenBrush}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Pay Button -->
+                    <Button Grid.Row="4" Content="PROCESAR PAGO ⚡" Style="{StaticResource PrimaryButton}" 
+                            Height="48" FontSize="15" FontWeight="Bold"
+                            Command="{Binding ProcesarPagoCommand}"/>
+                </Grid>
+            </Border>
+
+        </Grid>
+    </Border>
+</UserControl>

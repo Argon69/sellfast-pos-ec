@@ -1,0 +1,261 @@
+<Window x:Class="SellFast.App.Views.OnboardingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="SellFast POS — Asistente de Configuración Inicial"
+        Height="620" Width="720"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Icon="pack://application:,,,/Resources/app.ico">
+
+    <Border CornerRadius="24" Background="White" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" Padding="32" MouseDown="Window_MouseDown">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Header Progress Bar -->
+                <RowDefinition Height="*"/>    <!-- Multi-Step Content Frame -->
+                <RowDefinition Height="Auto"/> <!-- Action Buttons Footer -->
+            </Grid.RowDefinitions>
+
+            <!-- Header Progress -->
+            <Grid Grid.Row="0" Margin="0,0,0,24">
+                <StackPanel VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="36" Height="36" CornerRadius="12" Background="{StaticResource SidebarBgBrush}" Margin="0,0,12,0">
+                            <TextBlock Text="⚡" FontSize="20" Foreground="{StaticResource AccentLimeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Configuración Inicial del Negocio" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Personaliza tu punto de venta en 4 sencillos pasos." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Step Counter Pill -->
+                <Border Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="14" Background="{StaticResource BgPillBrush}" Padding="14,8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Paso " FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                        <TextBlock Text="{Binding CurrentStep}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <TextBlock Text=" de 4" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Multi-Step Content Frame -->
+            <Grid Grid.Row="1" Margin="0,0,0,24">
+
+                <!-- STEP 1: Datos del Negocio & Régimen -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="Step1Panel">
+                        <TextBlock Text="1. Identificación &amp; Razón Social" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="TIPO DE PERSONA / RÉGIMEN" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                        <ComboBox ItemsSource="{Binding TiposPersona}" SelectedItem="{Binding TipoPersona}" Height="40" Margin="0,0,0,14"/>
+
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="NOMBRE DEL NEGOCIO *" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding NombreNegocio, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="NIT / CÉDULA / RUT" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Nit, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="ESLOGAN O LEMA CORPORATIVO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding Eslogan, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,14"/>
+
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="TELÉFONO DE CONTACTO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Telefono, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="CORREO ELECTRÓNICO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="DIRECCIÓN FÍSICA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding Direccion, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,16"/>
+
+                        <!-- Admin Security Credentials -->
+                        <Border Background="{StaticResource BgSurfaceBrush}" CornerRadius="16" Padding="16" Margin="0,0,0,16" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="CREACIÓN DE CUENTA ADMINISTRADOR" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+                                <TextBlock Text="NOMBRE DEL ADMINISTRADOR" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding AdminNombreCompleto, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                                        <TextBlock Text="USUARIO DE ACCESO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <TextBox Text="{Binding AdminNombreUsuario, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                                        <TextBlock Text="CONTRASEÑA PERSONALIZADA" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <TextBox Text="{Binding AdminPassword, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Logo File Picker -->
+                        <Border Background="{StaticResource BgElevatedBrush}" CornerRadius="16" Padding="16">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="LOGO CORPORATIVO" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    <TextBlock Text="{Binding LogoRuta, FallbackValue='Ningún archivo de logo seleccionado'}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <Button Content="📷 Seleccionar Logo" Style="{StaticResource GhostButton}" Command="{Binding SeleccionarLogoCommand}" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- STEP 2: Configuración Regional, Moneda e Impuestos -->
+                <ScrollViewer x:Name="Step2Panel" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="2. País, Moneda e Impuesto Aplicable" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="SELECCIONE SU PAÍS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                        <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" Height="42" Margin="0,0,0,16">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Flag}" FontSize="16" Margin="0,0,8,0"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Currency, StringFormat='{} ({0})'}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                                <TextBlock Text="MONEDA (CÓDIGO)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Moneda, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="6,0,6,0">
+                                <TextBlock Text="SÍMBOLO DE MONEDA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding SimboloMoneda, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Margin="6,0,0,0">
+                                <TextBlock Text="IMPUESTO / IVA (%)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding Iva, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <CheckBox Content="Los precios de venta mostrados en el POS ya incluyen Impuesto/IVA" IsChecked="{Binding IvaIncluido}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="13" Margin="0,0,0,20"/>
+
+                        <Border Background="{StaticResource BgPillBrush}" CornerRadius="16" Padding="16">
+                            <TextBlock Text="💡 Nota: Los comprobantes PDF y reportes utilizarán la moneda y tasa de impuesto configurada en este paso." FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- STEP 3: Selección de Módulos Operativos -->
+                <ScrollViewer x:Name="Step3Panel" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="3. Módulos Operativos del Sistema" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                        <Border Background="White" CornerRadius="16" Padding="16" Margin="0,0,0,12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                            <CheckBox Content="🍽️  Habilitar Plano de Mesas &amp; Servicio en Salón" IsChecked="{Binding MesasHabilitadas}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="14" FontWeight="Bold"/>
+                        </Border>
+
+                        <Border Background="White" CornerRadius="16" Padding="16" Margin="0,0,0,12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                            <CheckBox Content="👨‍🍳  Habilitar Pantalla de Cocina &amp; Comandas" IsChecked="{Binding ComandasHabilitadas}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="14" FontWeight="Bold"/>
+                        </Border>
+
+                        <Border Background="White" CornerRadius="16" Padding="16" Margin="0,0,0,12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                            <CheckBox Content="🎫  Habilitar Emisión de Fichos (Almuerzos/Tickets)" IsChecked="{Binding FichosHabilitados}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="14" FontWeight="Bold"/>
+                        </Border>
+
+                        <Border Background="White" CornerRadius="16" Padding="16" Margin="0,0,0,16" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                            <CheckBox Content="💰  Habilitar Opción de Propina Sugerida" IsChecked="{Binding PropinasHabilitadas}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="14" FontWeight="Bold"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- STEP 4: Importación de Base de Datos Existente -->
+                <ScrollViewer x:Name="Step4Panel" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="4. Importar Base de Datos Existente (Opcional)" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+                        <TextBlock Text="Si vienes de otro sistema o tienes tu inventario/clientes en Excel, puedes cargarlos masivamente aquí." FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,20"/>
+
+                        <Border Background="{StaticResource BgPillBrush}" CornerRadius="16" Padding="16" Margin="0,0,0,16">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="📥 Plantilla de Importación Excel" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    <TextBlock Text="Descarga el formato pre-diseñado para llenar tus productos y clientes." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                                <Button Content="Descargar Plantilla" Style="{StaticResource PrimaryButton}" Command="{Binding DescargarPlantillaCommand}" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Border>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="White" CornerRadius="16" Padding="16" Margin="0,0,6,0" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="👥 Importar Clientes" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBlock Text="Documento, Nombre, Teléfono, Email, Dirección." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,14"/>
+                                    <Button Content="📊 Seleccionar Excel..." Style="{StaticResource GhostButton}" Command="{Binding ImportarClientesExcelCommand}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="16" Margin="6,0,0,0" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="📦 Importar Productos" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBlock Text="Código, Nombre, Categoría, Precios, Stock." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,14"/>
+                                    <Button Content="📦 Seleccionar Excel..." Style="{StaticResource GhostButton}" Command="{Binding ImportarProductosExcelCommand}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Background="{StaticResource SidebarBgBrush}" CornerRadius="16" Padding="16">
+                            <TextBlock Text="{Binding ImportSummaryText}" FontSize="12" Foreground="{StaticResource AccentLimeBrush}" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
+
+            <!-- Buttons Footer -->
+            <Grid Grid.Row="2">
+                <Button x:Name="BtnPrev" Content="← Anterior" Style="{StaticResource GhostButton}" Command="{Binding PreviousStepCommand}" Click="BtnPrev_Click" HorizontalAlignment="Left" Width="120" Height="44"/>
+                <Button x:Name="BtnNext" Content="Siguiente →" Style="{StaticResource PrimaryButton}" Command="{Binding NextStepCommand}" Click="BtnNext_Click" HorizontalAlignment="Right" Width="180" Height="44"/>
+                <Button x:Name="BtnFinish" Content="🚀 Finalizar &amp; Comenzar" Style="{StaticResource PrimaryButton}" Command="{Binding FinalizarOnboardingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Right" Width="220" Height="44" Visibility="Collapsed"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

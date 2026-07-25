@@ -1,0 +1,173 @@
+<UserControl x:Class="SellFast.App.Views.Pages.MesasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:models="clr-namespace:SellFast.Core.Models;assembly=SellFast.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1100">
+
+    <Border Padding="24">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <!-- Floorplan Grid (70%) -->
+                <ColumnDefinition Width="*"/>
+                <!-- Table Details Panel (30%) -->
+                <ColumnDefinition Width="360"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Floorplan Grid Area -->
+            <Grid Grid.Column="0" Margin="0,0,16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Header & Legend -->
+                    <RowDefinition Height="*"/>    <!-- Tables Cards Grid -->
+                </Grid.RowDefinitions>
+
+                <!-- Legend Bar -->
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border CornerRadius="4" Background="#22C55E" Width="12" Height="12" Margin="0,0,6,0"/>
+                        <TextBlock Text="Libre" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,0,16,0"/>
+
+                        <Border CornerRadius="4" Background="#F97316" Width="12" Height="12" Margin="0,0,6,0"/>
+                        <TextBlock Text="Ocupada" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,0,16,0"/>
+
+                        <Border CornerRadius="4" Background="#EF4444" Width="12" Height="12" Margin="0,0,6,0"/>
+                        <TextBlock Text="Cuenta Pedida" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,0,16,0"/>
+
+                        <Border CornerRadius="4" Background="#9CA3AF" Width="12" Height="12" Margin="0,0,6,0"/>
+                        <TextBlock Text="Reservada" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                    </StackPanel>
+
+                    <Button Content="+ Agregar Mesa" Style="{StaticResource PrimaryButton}" 
+                            HorizontalAlignment="Right" Padding="16,8"
+                            Command="{Binding ToggleAddMesaCommand}"/>
+                </Grid>
+
+                <!-- Tables ItemsControl Grid -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Mesas}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <!-- Interactive Table Card -->
+                                <Button Style="{StaticResource GhostButton}" Padding="0" Margin="0,0,14,14"
+                                        Command="{Binding DataContext.SelectMesaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}">
+                                    <Border Width="160" Height="140" Background="White" 
+                                            CornerRadius="20" Padding="16" 
+                                            BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Table Header & Status Dot -->
+                                            <Grid Grid.Row="0">
+                                                <TextBlock Text="{Binding Zona}" FontSize="11" Foreground="{StaticResource TextMutedBrush}" FontWeight="Bold"/>
+                                                <Ellipse Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                    <Ellipse.Style>
+                                                        <Style TargetType="Ellipse">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Estado}" Value="Libre">
+                                                                    <Setter Property="Fill" Value="#22C55E"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Estado}" Value="Ocupada">
+                                                                    <Setter Property="Fill" Value="#F97316"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Estado}" Value="CuentaPedida">
+                                                                    <Setter Property="Fill" Value="#EF4444"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Estado}" Value="Reservada">
+                                                                    <Setter Property="Fill" Value="#9CA3AF"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Ellipse.Style>
+                                                </Ellipse>
+                                            </Grid>
+
+                                            <!-- Table Number -->
+                                            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <TextBlock Text="🍽️" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                                                <TextBlock Text="{Binding Numero}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+
+                                            <!-- Capacity -->
+                                            <TextBlock Grid.Row="2" Text="{Binding Capacidad, StringFormat='{}Capacidad: {0} pers.'}" 
+                                                       FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Table Control Panel / Add Table Panel -->
+            <Border Grid.Column="1" Background="White" CornerRadius="20" Padding="20" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+
+                        <!-- Selected Table Info -->
+                        <TextBlock Text="Detalles de la Mesa" FontSize="17" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                        <Border Background="{StaticResource BgElevatedBrush}" CornerRadius="14" Padding="16" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="{Binding SelectedMesa.Numero, FallbackValue='Mesa No Seleccionada'}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="{Binding SelectedMesa.Zona, StringFormat='{}Zona: {0}', FallbackValue='Salón'}" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,8"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Estado Actual: " FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="{Binding SelectedMesa.Estado, FallbackValue='Libre'}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource SuccessGreenBrush}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="CAMBIAR ESTADO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,12"/>
+
+                        <!-- Action buttons for states -->
+                        <Button Content="🟢  Marcar como Libre" Style="{StaticResource GhostButton}" Margin="0,0,0,8" Height="42" HorizontalContentAlignment="Left"
+                                Command="{Binding CambiarEstadoMesaCommand}" CommandParameter="{x:Static models:EstadoMesa.Libre}"/>
+
+                        <Button Content="🟠  Marcar como Ocupada" Style="{StaticResource GhostButton}" Margin="0,0,0,8" Height="42" HorizontalContentAlignment="Left"
+                                Command="{Binding CambiarEstadoMesaCommand}" CommandParameter="{x:Static models:EstadoMesa.Ocupada}"/>
+
+                        <Button Content="🔴  Pedir Cuenta / Facturar" Style="{StaticResource GhostButton}" Margin="0,0,0,8" Height="42" HorizontalContentAlignment="Left"
+                                Command="{Binding CambiarEstadoMesaCommand}" CommandParameter="{x:Static models:EstadoMesa.CuentaPedida}"/>
+
+                        <Button Content="⚪  Marcar como Reservada" Style="{StaticResource GhostButton}" Margin="0,0,0,20" Height="42" HorizontalContentAlignment="Left"
+                                Command="{Binding CambiarEstadoMesaCommand}" CommandParameter="{x:Static models:EstadoMesa.Reservada}"/>
+
+                        <!-- Add Mesa Form (Toggle) -->
+                        <Border BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0"
+                                Visibility="{Binding IsAddingMesa, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                            <StackPanel>
+                                <TextBlock Text="Nueva Mesa" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+                                <TextBlock Text="NÚMERO / NOMBRE" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding NuevaMesaNumero, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,12"/>
+
+                                <TextBlock Text="ZONA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding NuevaMesaZona, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,12"/>
+
+                                <TextBlock Text="CAPACIDAD" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding NuevaMesaCapacidad, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,16"/>
+
+                                <Button Content="Guardar Mesa" Style="{StaticResource PrimaryButton}" Command="{Binding GuardarNuevaMesaCommand}"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

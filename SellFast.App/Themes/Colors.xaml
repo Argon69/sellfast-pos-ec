@@ -1,0 +1,79 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SellFast POS — Clean SaaS Palette (Inspired by Prodex)   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <!-- Base Canvas & Backgrounds -->
+    <Color x:Key="BgCanvas">#F4F5F9</Color>
+    <Color x:Key="BgSurface">#FFFFFF</Color>
+    <Color x:Key="BgElevated">#F8F9FD</Color>
+    <Color x:Key="BgPill">#EFF1F6</Color>
+    <Color x:Key="BgHover">#E8EBF2</Color>
+
+    <!-- Sidebar Palette (Dark Navy Charcoal) -->
+    <Color x:Key="SidebarBg">#1C1D2B</Color>
+    <Color x:Key="SidebarBgHover">#282A3E</Color>
+    <Color x:Key="SidebarText">#9BA0B8</Color>
+    <Color x:Key="SidebarTextActive">#1C1D2B</Color>
+    <Color x:Key="SidebarActivePill">#D2F835</Color> <!-- Electric Lime -->
+
+    <!-- Accent Highlights -->
+    <Color x:Key="AccentLime">#D2F835</Color>
+    <Color x:Key="AccentLimeHover">#C3E829</Color>
+    <Color x:Key="AccentDark">#1C1D2B</Color>
+
+    <!-- Semantic Status Indicators -->
+    <Color x:Key="SuccessGreen">#22C55E</Color>
+    <Color x:Key="SuccessGreenBg">#DCFCE7</Color>
+    <Color x:Key="WarningOrange">#F97316</Color>
+    <Color x:Key="WarningOrangeBg">#FFEDD5</Color>
+    <Color x:Key="ErrorRed">#EF4444</Color>
+    <Color x:Key="ErrorRedBg">#FEE2E2</Color>
+    <Color x:Key="InfoBlue">#3B82F6</Color>
+
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimary">#1A1C29</Color>
+    <Color x:Key="TextSecondary">#6B7280</Color>
+    <Color x:Key="TextMuted">#9CA3AF</Color>
+    <Color x:Key="TextOnDark">#FFFFFF</Color>
+
+    <!-- Borders -->
+    <Color x:Key="BorderLight">#EAF0F6</Color>
+    <Color x:Key="BorderMedium">#E2E8F0</Color>
+
+    <!-- Solid Brushes -->
+    <SolidColorBrush x:Key="BgCanvasBrush" Color="{StaticResource BgCanvas}"/>
+    <SolidColorBrush x:Key="BgSurfaceBrush" Color="{StaticResource BgSurface}"/>
+    <SolidColorBrush x:Key="BgElevatedBrush" Color="{StaticResource BgElevated}"/>
+    <SolidColorBrush x:Key="BgPillBrush" Color="{StaticResource BgPill}"/>
+    <SolidColorBrush x:Key="BgHoverBrush" Color="{StaticResource BgHover}"/>
+
+    <SolidColorBrush x:Key="SidebarBgBrush" Color="{StaticResource SidebarBg}"/>
+    <SolidColorBrush x:Key="SidebarBgHoverBrush" Color="{StaticResource SidebarBgHover}"/>
+    <SolidColorBrush x:Key="SidebarTextBrush" Color="{StaticResource SidebarText}"/>
+    <SolidColorBrush x:Key="SidebarTextActiveBrush" Color="{StaticResource SidebarTextActive}"/>
+    <SolidColorBrush x:Key="SidebarActivePillBrush" Color="{StaticResource SidebarActivePill}"/>
+
+    <SolidColorBrush x:Key="AccentLimeBrush" Color="{StaticResource AccentLime}"/>
+    <SolidColorBrush x:Key="AccentLimeHoverBrush" Color="{StaticResource AccentLimeHover}"/>
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="{StaticResource AccentDark}"/>
+
+    <SolidColorBrush x:Key="SuccessGreenBrush" Color="{StaticResource SuccessGreen}"/>
+    <SolidColorBrush x:Key="SuccessGreenBgBrush" Color="{StaticResource SuccessGreenBg}"/>
+    <SolidColorBrush x:Key="WarningOrangeBrush" Color="{StaticResource WarningOrange}"/>
+    <SolidColorBrush x:Key="WarningOrangeBgBrush" Color="{StaticResource WarningOrangeBg}"/>
+    <SolidColorBrush x:Key="ErrorRedBrush" Color="{StaticResource ErrorRed}"/>
+    <SolidColorBrush x:Key="ErrorRedBgBrush" Color="{StaticResource ErrorRedBg}"/>
+    <SolidColorBrush x:Key="InfoBlueBrush" Color="{StaticResource InfoBlue}"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
+    <SolidColorBrush x:Key="TextOnDarkBrush" Color="{StaticResource TextOnDark}"/>
+
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLight}"/>
+    <SolidColorBrush x:Key="BorderMediumBrush" Color="{StaticResource BorderMedium}"/>
+
+</ResourceDictionary>

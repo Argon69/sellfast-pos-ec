@@ -1,0 +1,200 @@
+<UserControl x:Class="SellFast.App.Views.Pages.ConfiguracionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1100">
+
+    <Border Padding="24">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Width="620" HorizontalAlignment="Left">
+                <!-- Header with Onboarding Launcher -->
+                <StackPanel Margin="0,0,0,20">
+                    <TextBlock Text="Configuración General del Negocio" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                    <Button Content="🚀 Asistente de Configuración (Onboarding)" Style="{StaticResource PrimaryButton}" Command="{Binding AbrirOnboardingCommand}" HorizontalAlignment="Left" Padding="14,8"/>
+                </StackPanel>
+
+                <Border Background="White" CornerRadius="20" Padding="24" Margin="0,0,0,20" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="DATOS DEL NEGOCIO &amp; RÉGIMEN FISCAL" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="Nombre del Negocio / Razón Social" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding Config.NombreNegocio, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="Eslogan o Lema Corporativo" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding Config.Eslogan, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,16"/>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="NIT / Identificación Fiscal" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.NIT, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Teléfono de Contacto" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.Telefono, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="Dirección Física" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding Config.Direccion, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Regional Settings -->
+                <Border Background="White" CornerRadius="20" Padding="24" Margin="0,0,0,20" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="CONFIGURACIÓN REGIONAL &amp; MONEDA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,16"/>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                                <TextBlock Text="País" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.Pais, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="6,0,6,0">
+                                <TextBlock Text="Moneda (ej. COP)" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.Moneda, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Margin="6,0,0,0">
+                                <TextBlock Text="Símbolo Moneda" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.SimboloMoneda, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="Impuesto / IVA (%)" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.IVA, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+
+                            <CheckBox Grid.Column="1" Content="Precios POS ya incluyen IVA" IsChecked="{Binding Config.IVAIncluido}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="13" VerticalAlignment="Center" Margin="8,18,0,0"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Hardware & Devices -->
+                <Border Background="White" CornerRadius="20" Padding="24" Margin="0,0,0,24" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="🔌 DISPOSITIVOS &amp; HARDWARE POS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="Impresora Térmica Detectada" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding ImpresorasDisponibles}" SelectedItem="{Binding SelectedImpresora}" Margin="0,0,0,16"/>
+
+                        <Border Background="{StaticResource BgPillBrush}" CornerRadius="16" Padding="14">
+                            <StackPanel>
+                                <TextBlock Text="📷 Lector de Código de Barras (USB Scanner)" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Los lectores USB funcionan automáticamente como entrada de teclado. Conecte su escáner y escanee directamente en el campo de búsqueda del Punto de Venta." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Excel Database Import -->
+                <Border Background="White" CornerRadius="20" Padding="24" Margin="0,0,0,24" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="IMPORTACIÓN MASIVA DE DATOS (EXCEL)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,16"/>
+
+                        <Grid Margin="0,0,0,14">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Carga masiva de clientes e inventario" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Importa hojas de cálculo Excel (.xlsx) directamente a la base de datos." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button Content="📥 Plantilla Excel" Style="{StaticResource GhostButton}" Command="{Binding DescargarPlantillaCommand}" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Content="👥 Importar Clientes desde Excel" Style="{StaticResource PrimaryButton}" Command="{Binding ImportarClientesExcelCommand}" Margin="0,0,6,0"/>
+                            <Button Grid.Column="1" Content="📦 Importar Productos desde Excel" Style="{StaticResource PrimaryButton}" Command="{Binding ImportarProductosExcelCommand}" Margin="6,0,0,0"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Backup & Security -->
+                <Border Background="White" CornerRadius="20" Padding="24" Margin="0,0,0,24" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="💾 COPIAS DE SEGURIDAD &amp; RESPALDO DE DATOS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,16"/>
+
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Respaldar Base de Datos Local" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Crea una copia de seguridad (.db) de todas las ventas, productos y clientes." FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button Content="💾 Crear Copia de Seguridad (.db)" Style="{StaticResource PrimaryButton}" Command="{Binding CrearBackupDatabaseCommand}" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Multi-Terminal LAN Sync -->
+                <Border Background="White" CornerRadius="20" Padding="24" Margin="0,0,0,24" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="🌐 SINCRONIZACIÓN RED LOCAL (MULTI-TERMINAL LAN)" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="Modo de Trabajo de esta Computadora" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding ModosRedDisponibles}" SelectedItem="{Binding Config.ModoRedTerminal}" Margin="0,0,0,16"/>
+
+                        <!-- Dynamic Shared DB Path for Multi-Terminal -->
+                        <TextBlock Text="Ruta de Base de Datos (Local o Compartida en Red LAN)" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding RutaBaseDatos, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,8,0"/>
+                            <Button Grid.Column="1" Content="📁 Examinar..." Style="{StaticResource DarkButton}" Command="{Binding SeleccionarRutaBaseDatosCommand}" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <TextBlock Text="IP del Servidor Principal (Caja Maestra)" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.ServidorIP, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Puerto Red" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                <TextBox Text="{Binding Config.PuertoRed, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Border Background="{StaticResource BgPillBrush}" CornerRadius="16" Padding="14">
+                            <Grid>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Dirección IP Local de esta PC en Wi-Fi/LAN:" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="{Binding IpLocalActual, StringFormat='{}http://{0}:8080'}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                </StackPanel>
+                                <Button Content="⚡ Probar Conexión" Style="{StaticResource PrimaryButton}" Command="{Binding ProbarConexionRedCommand}" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Button Content="💾 Guardar Cambios de Configuración" Style="{StaticResource PrimaryButton}" Command="{Binding GuardarConfiguracionCommand}" Padding="24,12" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>
