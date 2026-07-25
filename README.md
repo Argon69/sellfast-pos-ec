@@ -14,6 +14,7 @@
 [![Excel](https://img.shields.io/badge/ClosedXML-Excel_Import%2FExport-217346?style=for-the-badge&logo=microsoft-excel)](https://github.com/ClosedXML/ClosedXML)
 [![PDF](https://img.shields.io/badge/QuestPDF-Legal_Receipts-FF4081?style=for-the-badge&logo=adobe-acrobat-reader)](https://www.questpdf.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Download Release](https://img.shields.io/badge/Descargar_Ejecutable-Windows_v2.0-0078D4?style=for-the-badge&logo=windows)](https://github.com/ydmmejia/SellFast-POS/releases)
 
 ---
 
