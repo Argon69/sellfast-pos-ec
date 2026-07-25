@@ -31,7 +31,8 @@ Aplicación de escritorio desarrollada en .NET y Windows Forms para la administr
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone https://github.com/tu-usuario/CafeSistema.git
+    git clone https://github.com/ydmmejia/SellFast-POS.git
+    cd SellFast-POS
     ```
 2.  **Navegar al directorio:**
     ```bash
