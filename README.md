@@ -15,6 +15,7 @@
 [![PDF](https://img.shields.io/badge/QuestPDF-Legal_Receipts-FF4081?style=for-the-badge&logo=adobe-acrobat-reader)](https://www.questpdf.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Download Release](https://img.shields.io/badge/Descargar_Ejecutable-Windows_v2.0-0078D4?style=for-the-badge&logo=windows)](https://github.com/ydmmejia/SellFast-POS/releases)
+[![Downloads](https://img.shields.io/github/downloads/ydmmejia/SellFast-POS/total?style=for-the-badge&color=22C55E&logo=github&label=Descargas)](https://github.com/ydmmejia/SellFast-POS/releases)
 
 ---
 
