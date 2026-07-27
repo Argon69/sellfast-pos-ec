@@ -113,15 +113,30 @@
                                 Command="{Binding ClearCartCommand}" Padding="10,4" Foreground="{StaticResource ErrorRedBrush}"/>
                     </Grid>
 
-                    <!-- Client Selector -->
+                    <!-- Client, Mesa & Subcuenta Selector -->
                     <Border Grid.Row="1" Background="{StaticResource BgElevatedBrush}" CornerRadius="14" Padding="12" Margin="0,0,0,16">
                         <StackPanel>
-                            <TextBlock Text="CLIENTE SELECCIONADO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                            <TextBlock Text="CLIENTE SELECCIONADO" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
                             <ComboBox ItemsSource="{Binding ClientesDisponibles}" 
                                       SelectedItem="{Binding SelectedCliente}"
                                       DisplayMemberPath="NombreCompleto"
                                       Background="White" Foreground="{StaticResource TextPrimaryBrush}"
-                                      Height="36" FontSize="13"/>
+                                      Height="34" FontSize="13" Margin="0,0,0,10"/>
+
+                            <Grid Margin="0,0,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                                    <TextBlock Text="MESA (OPCIONAL)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <ComboBox ItemsSource="{Binding MesasDisponibles}" SelectedItem="{Binding SelectedMesa}" DisplayMemberPath="Numero" Height="32" FontSize="12"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                                    <TextBlock Text="SUBCUENTA / COMENSAL" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBox Text="{Binding NombreSubcuenta, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Padding="8,4" FontSize="12"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </Border>
 
@@ -168,9 +183,22 @@
                         </ItemsControl>
                     </ScrollViewer>
 
-                    <!-- Summary & Totals -->
+                    <!-- Summary, Split Bill & Totals -->
                     <Border Grid.Row="3" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,16">
                         <StackPanel>
+                            <!-- Split Bill Quick Toolbar -->
+                            <Grid Margin="0,0,0,10">
+                                <TextBlock Text="DIVIDIR CUENTA (SPLIT)" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="÷ 2" Style="{StaticResource GhostButton}" Padding="8,2" FontSize="11" Margin="0,0,4,0"
+                                            Command="{Binding AplicarDivisionPartesCommand}" CommandParameter="2"/>
+                                    <Button Content="÷ 3" Style="{StaticResource GhostButton}" Padding="8,2" FontSize="11" Margin="0,0,4,0"
+                                            Command="{Binding AplicarDivisionPartesCommand}" CommandParameter="3"/>
+                                    <Button Content="÷ 4" Style="{StaticResource GhostButton}" Padding="8,2" FontSize="11"
+                                            Command="{Binding AplicarDivisionPartesCommand}" CommandParameter="4"/>
+                                </StackPanel>
+                            </Grid>
+
                             <Grid Margin="0,0,0,6">
                                 <TextBlock Text="Subtotal" Foreground="{StaticResource TextSecondaryBrush}" FontSize="13"/>
                                 <TextBlock Text="{Binding CartSubtotal, Converter={StaticResource CurrencyFormatterConverter}}" Foreground="{StaticResource TextPrimaryBrush}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
@@ -185,6 +213,15 @@
                                 <TextBlock Text="TOTAL A PAGAR" Foreground="{StaticResource TextPrimaryBrush}" FontSize="15" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding CartTotal, Converter={StaticResource CurrencyFormatterConverter}}" Foreground="{StaticResource SuccessGreenBrush}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>
                             </Grid>
+
+                            <!-- Split Bill Active Banner -->
+                            <Border Background="{StaticResource BgPillBrush}" CornerRadius="8" Padding="8,6" Margin="0,8,0,0"
+                                    Visibility="{Binding IsSplitBillActive, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                                <Grid>
+                                    <TextBlock Text="{Binding PartesSplitBill, StringFormat='{}Cobro Fraccionado ({0} Partes):'}" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding TotalParteDividida, Converter={StaticResource CurrencyFormatterConverter}}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SuccessGreenBrush}" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Border>
                         </StackPanel>
                     </Border>
 

@@ -31,6 +31,16 @@ namespace SellFast.App.ViewModels
         private bool _isAddingMesa = false;
 
         public ObservableCollection<Mesa> Mesas { get; } = new();
+        public ObservableCollection<string> SubcuentasMesa { get; } = new();
+
+        [ObservableProperty]
+        private string? _selectedSubcuenta = "Cuenta Principal";
+
+        [ObservableProperty]
+        private string _nuevaSubcuentaNombre = "";
+
+        [ObservableProperty]
+        private bool _isAddingSubcuenta = false;
 
         public Array EstadosMesaDisponibles => Enum.GetValues(typeof(EstadoMesa));
 
@@ -65,12 +75,67 @@ namespace SellFast.App.ViewModels
 
             if (SelectedMesa == null && Mesas.Count > 0)
                 SelectedMesa = Mesas.First();
+
+            await CargarSubcuentasDeMesaAsync();
+        }
+
+        partial void OnSelectedMesaChanged(Mesa? value)
+        {
+            _ = CargarSubcuentasDeMesaAsync();
+        }
+
+        public async Task CargarSubcuentasDeMesaAsync()
+        {
+            SubcuentasMesa.Clear();
+            SubcuentasMesa.Add("Cuenta Principal");
+
+            if (SelectedMesa != null)
+            {
+                var subcuentas = await _context.Transacciones
+                    .Where(t => t.MesaId == SelectedMesa.Id && !string.IsNullOrEmpty(t.NombreSubcuenta))
+                    .Select(t => t.NombreSubcuenta!)
+                    .Distinct()
+                    .ToListAsync();
+
+                foreach (var sc in subcuentas)
+                {
+                    if (!SubcuentasMesa.Contains(sc))
+                        SubcuentasMesa.Add(sc);
+                }
+            }
+            SelectedSubcuenta = SubcuentasMesa.FirstOrDefault();
         }
 
         [RelayCommand]
         private void SelectMesa(Mesa mesa)
         {
             SelectedMesa = mesa;
+        }
+
+        [RelayCommand]
+        private void ToggleAddSubcuenta()
+        {
+            NuevaSubcuentaNombre = $"Cuenta {SubcuentasMesa.Count + 1}";
+            IsAddingSubcuenta = !IsAddingSubcuenta;
+        }
+
+        [RelayCommand]
+        private void GuardarNuevaSubcuenta()
+        {
+            if (string.IsNullOrWhiteSpace(NuevaSubcuentaNombre))
+            {
+                Views.ModernDialogWindow.Show("Validación Requerida", "El nombre de la subcuenta es obligatorio (ej. Cuenta 2 o Nombre del Comensal).", Views.DialogType.Warning);
+                return;
+            }
+
+            string nombre = NuevaSubcuentaNombre.Trim();
+            if (!SubcuentasMesa.Contains(nombre))
+            {
+                SubcuentasMesa.Add(nombre);
+            }
+            SelectedSubcuenta = nombre;
+            IsAddingSubcuenta = false;
+            Views.ModernDialogWindow.Show("Subcuenta Creada", $"Subcuenta '{nombre}' agregada a {SelectedMesa?.Numero}.", Views.DialogType.Success);
         }
 
         [RelayCommand]

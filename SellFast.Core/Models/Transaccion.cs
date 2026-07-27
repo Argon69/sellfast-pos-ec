@@ -36,6 +36,9 @@ namespace SellFast.Core.Models
 
         public int? MesaId { get; set; }
 
+        [StringLength(100)]
+        public string? NombreSubcuenta { get; set; }
+
         [Required]
         public DateTime FechaHora { get; set; } = DateTime.Now;
 

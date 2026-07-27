@@ -122,6 +122,12 @@ namespace SellFast.App
 
                 try
                 {
+                    dbContext.Database.ExecuteSqlRaw("ALTER TABLE Transacciones ADD COLUMN NombreSubcuenta TEXT;");
+                }
+                catch { }
+
+                try
+                {
                     dbContext.Database.ExecuteSqlRaw(@"
                         CREATE TABLE IF NOT EXISTS AuditLogs (
                             Id INTEGER PRIMARY KEY AUTOINCREMENT,

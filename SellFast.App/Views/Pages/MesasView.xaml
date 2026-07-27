@@ -143,8 +143,27 @@
                         <Button Content="🔴  Pedir Cuenta / Facturar" Style="{StaticResource GhostButton}" Margin="0,0,0,8" Height="42" HorizontalContentAlignment="Left"
                                 Command="{Binding CambiarEstadoMesaCommand}" CommandParameter="{x:Static models:EstadoMesa.CuentaPedida}"/>
 
-                        <Button Content="⚪  Marcar como Reservada" Style="{StaticResource GhostButton}" Margin="0,0,0,20" Height="42" HorizontalContentAlignment="Left"
+                        <Button Content="⚪  Marcar como Reservada" Style="{StaticResource GhostButton}" Margin="0,0,0,16" Height="42" HorizontalContentAlignment="Left"
                                 Command="{Binding CambiarEstadoMesaCommand}" CommandParameter="{x:Static models:EstadoMesa.Reservada}"/>
+
+                        <!-- Subcuentas de la Mesa (Cuentas Independientes / Comensales) -->
+                        <Border BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,16">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,10">
+                                    <TextBlock Text="CUENTAS DE LA MESA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                                    <Button Content="+ Subcuenta" Style="{StaticResource GhostButton}" HorizontalAlignment="Right" Padding="8,4" FontSize="11"
+                                            Command="{Binding ToggleAddSubcuentaCommand}"/>
+                                </Grid>
+
+                                <ComboBox ItemsSource="{Binding SubcuentasMesa}" SelectedItem="{Binding SelectedSubcuenta}" Margin="0,0,0,10"/>
+
+                                <!-- Add Subcuenta Form -->
+                                <StackPanel Visibility="{Binding IsAddingSubcuenta, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Margin="0,0,0,10">
+                                    <TextBox Text="{Binding NuevaSubcuentaNombre, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ModernTextBox}" Margin="0,0,0,6"/>
+                                    <Button Content="Crear Subcuenta" Style="{StaticResource PrimaryButton}" Command="{Binding GuardarNuevaSubcuentaCommand}" Padding="10,6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
 
                         <!-- Add Mesa Form (Toggle) -->
                         <Border BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,0"

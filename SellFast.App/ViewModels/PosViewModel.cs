@@ -47,6 +47,12 @@ namespace SellFast.App.ViewModels
         private Cliente? _selectedCliente;
 
         [ObservableProperty]
+        private Mesa? _selectedMesa;
+
+        [ObservableProperty]
+        private string _nombreSubcuenta = "Cuenta Principal";
+
+        [ObservableProperty]
         private TipoPago _selectedTipoPago = TipoPago.Efectivo;
 
         [ObservableProperty]
@@ -58,8 +64,19 @@ namespace SellFast.App.ViewModels
         [ObservableProperty]
         private bool _isProcessing = false;
 
+        [ObservableProperty]
+        private bool _isSplitBillActive = false;
+
+        [ObservableProperty]
+        private int _partesSplitBill = 2;
+
+        [ObservableProperty]
+        private decimal _totalParteDividida = 0;
+
         public ObservableCollection<Producto> ProductosFiltrados { get; } = new();
         public ObservableCollection<Cliente> ClientesDisponibles { get; } = new();
+        public ObservableCollection<Mesa> MesasDisponibles { get; } = new();
+        public ObservableCollection<string> SubcuentasMesa { get; } = new();
         public ObservableCollection<CartItem> Cart { get; } = new();
 
         public decimal CartSubtotal => Cart.Sum(i => i.Subtotal);
@@ -97,6 +114,15 @@ namespace SellFast.App.ViewModels
 
             if (SelectedCliente == null && ClientesDisponibles.Count > 0)
                 SelectedCliente = ClientesDisponibles.First();
+
+            var mesas = await _context.Mesas
+                .Where(m => m.Activa)
+                .OrderBy(m => m.Numero)
+                .ToListAsync();
+
+            MesasDisponibles.Clear();
+            foreach (var m in mesas)
+                MesasDisponibles.Add(m);
         }
 
         partial void OnSearchQueryChanged(string value) => _ = FiltrarProductosAsync();
@@ -222,6 +248,8 @@ namespace SellFast.App.ViewModels
                 {
                     NumeroTransaccion = Transaccion.GenerarNumeroTransaccion(),
                     ClienteId = SelectedCliente.Id,
+                    MesaId = SelectedMesa?.Id,
+                    NombreSubcuenta = string.IsNullOrWhiteSpace(NombreSubcuenta) ? "Cuenta Principal" : NombreSubcuenta.Trim(),
                     FechaHora = DateTime.Now,
                     TipoPago = SelectedTipoPago,
                     Estado = EstadoTransaccion.Completada,
@@ -289,11 +317,32 @@ namespace SellFast.App.ViewModels
             }
         }
 
+        [RelayCommand]
+        private void ToggleSplitBill()
+        {
+            IsSplitBillActive = !IsSplitBillActive;
+            RecalcularTotales();
+        }
+
+        [RelayCommand]
+        private void AplicarDivisionPartes(string partesStr)
+        {
+            if (int.TryParse(partesStr, out int partes) && partes >= 2)
+            {
+                PartesSplitBill = partes;
+                IsSplitBillActive = true;
+                RecalcularTotales();
+                Views.ModernDialogWindow.Show("División Aplicada", $"Cuenta dividida en {partes} partes iguales de ${TotalParteDividida:N0} c/u.", Views.DialogType.Success);
+            }
+        }
+
         public void RecalcularTotales()
         {
             OnPropertyChanged(nameof(CartSubtotal));
             OnPropertyChanged(nameof(CartMontoDescuento));
             OnPropertyChanged(nameof(CartTotal));
+            TotalParteDividida = PartesSplitBill > 0 ? Math.Round(CartTotal / Math.Max(1, PartesSplitBill), 2) : CartTotal;
+            OnPropertyChanged(nameof(TotalParteDividida));
         }
     }
 }
